@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lightning Scheduler – Schedule Appointment</title>
+<script src="https://assets.meshmesh.io/system/tailwindcss-browser-4.js"></script>
+<style type="text/tailwindcss">
+@font-face{font-family:"Salesforce Sans";src:url(https://a.sfdcstatic.com/shared/fonts/salesforce-sans/SalesforceSans-Regular.woff2) format("woff2");font-weight:400}
+@font-face{font-family:"Salesforce Sans";src:url(https://a.sfdcstatic.com/shared/fonts/salesforce-sans/SalesforceSans-Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:"ITC Avant Garde";src:url(https://a.sfdcstatic.com/shared/fonts/avant-garde/AvantGardeForSalesforceW05-Dm.woff2) format("woff2")}
+@theme{
+  --color-primary:#032D60;--color-secondary:#0176D3;--color-accent:#00B3FF;--color-surface:#F4F6F9;
+  --color-muted:#565656;--color-success:#2E844A;--color-warning:#DD7A01;--color-error:#BA0517;
+  --color-heading:#002C6E;--color-cta:#0176D3;--color-light-blue:#EAF5FE;--color-line:#C9C7C5;
+  --font-sans:"Salesforce Sans",Arial,sans-serif;--font-heading:"ITC Avant Garde",system-ui,sans-serif;
+}
+</style>
+</head>
+<body class="bg-surface font-sans text-[#080707] min-h-screen">
+
+<!-- Global header -->
+<header class="bg-white border-b border-line">
+  <div class="max-w-[1200px] mx-auto px-4 h-14 flex items-center gap-4">
+    <img src="https://wp.sfdcdigital.com/en-us/wp-content/uploads/sites/4/2024/11/logo-salesforce.svg?w=1024" alt="Salesforce" class="h-8">
+    <span class="text-muted text-sm hidden sm:inline">|</span>
+    <span class="text-sm font-bold text-heading hidden sm:inline">Lightning Scheduler</span>
+    <div class="ml-auto flex items-center gap-3 text-sm text-muted">
+      <span class="hidden md:inline">Cirrus Bank · Branch Services</span>
+      <div class="w-8 h-8 rounded-full bg-primary text-white grid place-items-center text-xs font-bold">JS</div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-[1200px] mx-auto px-4 py-6">
+  <!-- Page header card -->
+  <div class="bg-white rounded border border-line shadow-sm p-4 mb-4 flex items-center gap-3">
+    <div class="w-10 h-10 rounded bg-[#7F8DE1] grid place-items-center text-white">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+    </div>
+    <div>
+      <p class="text-xs text-muted uppercase tracking-wide">Service Appointment · Account: Jordan Smith</p>
+      <h1 class="font-heading text-xl text-heading">Schedule Appointment</h1>
+    </div>
+  </div>
+
+  <!-- Path / progress -->
+  <ol id="path" class="grid grid-cols-5 gap-1 mb-4 text-xs sm:text-sm font-bold"></ol>
+
+  <!-- Panels -->
+  <section class="bg-white rounded border border-line shadow-sm">
+    <div id="panel" class="p-4 sm:p-6 min-h-[420px]"></div>
+    <div class="border-t border-line bg-surface px-4 sm:px-6 py-3 flex justify-between items-center rounded-b">
+      <button id="backBtn" class="px-4 py-2 rounded border border-line bg-white text-secondary font-bold text-sm hover:bg-light-blue">Back</button>
+      <span id="footHint" class="text-xs text-muted hidden sm:inline"></span>
+      <button id="nextBtn" class="px-8 py-2 rounded bg-cta text-white font-bold text-sm hover:bg-[#014486] disabled:bg-line disabled:cursor-not-allowed">Next</button>
+    </div>
+  </section>
+</main>
+
+<!-- Toast -->
+<div id="toast" class="hidden fixed top-4 left-1/2 -translate-x-1/2 bg-success text-white rounded shadow-lg px-5 py-3 flex items-center gap-3 z-50">
+  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+  <span id="toastMsg" class="text-sm font-bold"></span>
+  <button onclick="toast.classList.add('hidden')" class="ml-2 text-white/80 hover:text-white">✕</button>
+</div>
+
+<script>
+const steps=["Appointment Type","Location","Resource","Date & Time","Review"];
+const workTypes=[
+  {g:"Lending",items:[{n:"Mortgage Consultation",d:60},{n:"Auto Loan Review",d:30}]},
+  {g:"Accounts",items:[{n:"Open a New Account",d:45},{n:"Wealth Planning",d:90}]}
+];
+const locations=[
+  {n:"Downtown Branch",a:"415 Mission St, San Francisco, CA",dist:"0.8 mi"},
+  {n:"Union Square Branch",a:"350 Powell St, San Francisco, CA",dist:"1.4 mi"},
+  {n:"Oakland Center",a:"1 Kaiser Plaza, Oakland, CA",dist:"9.2 mi"}
+];
+const resources=[
+  {n:"Any available resource",r:"Fastest availability",i:"★"},
+  {n:"Maria Chen",r:"Senior Mortgage Advisor",i:"MC"},
+  {n:"David Okafor",r:"Loan Officer",i:"DO"},
+  {n:"Priya Patel",r:"Financial Advisor",i:"PP"}
+];
+const S={step:3,type:workTypes[0].items[0],loc:locations[0],res:resources[1],mode:"In person",tz:"(GMT-07:00) Pacific Daylight Time",weekOffset:0,day:0,slot:null,notes:""};
+const fmtD=d=>d.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"});
+function weekDays(){const base=new Date();base.setHours(0,0,0,0);base.setDate(base.getDate()+1+S.weekOffset*7);return [...Array(7)].map((_,i)=>{const d=new Date(base);d.setDate(base.getDate()+i);return d;});}
+function seed(n){let x=Math.sin(n)*10000;return x-Math.floor(x);}
+function slotsFor(d){
+  const out=[];const wk=d.getDay()===0;
+  for(let h=8;h<19;h++)for(const m of [0,30]){
+    const key=d.getDate()*100+h*2+m+S.res.n.length;
+    out.push({h,m,avail:!wk&&seed(key)>0.45});
+  }return out;
+}
+const lbl=s=>{const h=s.h%12||12;return `${h}:${s.m?"30":"00"} ${s.h<12?"AM":"PM"}`;};
+
+function renderPath(){
+  path.innerHTML=steps.map((s,i)=>{
+    const done=i<S.step,cur=i===S.step;
+    const cls=cur?"bg-primary text-white":done?"bg-success text-white":"bg-[#DDDBDA] text-muted";
+    return `<li><button onclick="go(${i})" class="w-full py-2 px-2 ${cls} ${i===0?'rounded-l-full':''} ${i===4?'rounded-r-full':''} flex items-center justify-center gap-1 hover:opacity-90">${done?'✓ ':''}<span class="truncate">${s}</span></button></li>`;
+  }).join("");
+}
+function card(sel,inner,onclick){return `<button onclick="${onclick}" class="text-left w-full p-4 rounded border-2 ${sel?'border-cta bg-light-blue':'border-line bg-white hover:border-secondary'} transition">${inner}</button>`;}
+
+function renderPanel(){
+  const p=panel;
+  if(S.step===0){
+    p.innerHTML=`<h2 class="font-heading text-lg text-heading mb-1">What would you like to discuss?</h2><p class="text-sm text-muted mb-4">Select a work type group and topic.</p>`+
+    workTypes.map((g,gi)=>`<h3 class="text-xs font-bold uppercase text-muted mt-4 mb-2">${g.g}</h3><div class="grid sm:grid-cols-2 gap-3">${g.items.map((w,wi)=>card(S.type.n===w.n,`<p class="font-bold text-heading">${w.n}</p><p class="text-sm text-muted">${w.d} minutes</p>`,`pickType(${gi},${wi})`)).join("")}</div>`).join("");
+  }
+  if(S.step===1){
+    p.innerHTML=`<h2 class="font-heading text-lg text-heading mb-1">Select a location</h2><p class="text-sm text-muted mb-4">Service territories near <b>San Francisco, CA 94105</b></p>
+    <div class="grid lg:grid-cols-2 gap-4"><div class="space-y-3">${locations.map((l,i)=>card(S.loc.n===l.n,`<div class="flex justify-between"><p class="font-bold text-heading">${l.n}</p><span class="text-xs text-muted">${l.dist}</span></div><p class="text-sm text-muted">${l.a}</p>`,`pickLoc(${i})`)).join("")}</div>
+    <div class="rounded border border-line bg-[repeating-linear-gradient(45deg,#EAF5FE,#EAF5FE_12px,#F4F6F9_12px,#F4F6F9_24px)] min-h-[240px] grid place-items-center text-muted text-sm relative">
+      <span class="absolute top-[30%] left-[40%] text-error text-2xl">📍</span><span class="absolute top-[45%] left-[55%] text-secondary text-2xl">📍</span><span class="absolute top-[65%] left-[75%] text-secondary text-2xl">📍</span>Map preview</div></div>`;
+  }
+  if(S.step===2){
+    p.innerHTML=`<h2 class="font-heading text-lg text-heading mb-1">Select a service resource</h2><p class="text-sm text-muted mb-4">Resources at ${S.loc.n} skilled in ${S.type.n}.</p>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">${resources.map((r,i)=>card(S.res.n===r.n,`<div class="w-12 h-12 rounded-full ${i?'bg-primary':'bg-accent'} text-white grid place-items-center font-bold mb-3">${r.i}</div><p class="font-bold text-heading">${r.n}</p><p class="text-sm text-muted">${r.r}</p>`,`pickRes(${i})`)).join("")}</div>`;
+  }
+  if(S.step===3){
+    const days=weekDays(),d=days[S.day],sl=slotsFor(d);
+    const grp=[["Morning",s=>s.h<12],["Afternoon",s=>s.h>=12&&s.h<17],["Evening",s=>s.h>=17]];
+    p.innerHTML=`<div class="grid lg:grid-cols-[260px_1fr] gap-6">
+      <aside class="space-y-4">
+        <div class="rounded border border-line p-4 bg-surface">
+          <p class="text-xs font-bold uppercase text-muted mb-2">Appointment</p>
+          <p class="font-bold text-heading">${S.type.n}</p><p class="text-sm text-muted mb-3">${S.type.d} min</p>
+          <p class="text-xs font-bold uppercase text-muted mb-1">Location</p><p class="text-sm mb-3">${S.loc.n}</p>
+          <p class="text-xs font-bold uppercase text-muted mb-1">Resource</p>
+          <select onchange="S.res=resources[this.value];S.slot=null;render()" class="w-full border border-line rounded px-2 py-1.5 text-sm bg-white">${resources.map((r,i)=>`<option value="${i}" ${S.res.n===r.n?'selected':''}>${r.n}</option>`).join("")}</select>
+        </div>
+        <div><p class="text-xs font-bold uppercase text-muted mb-2">Appointment Mode</p>
+          <div class="flex rounded border border-line overflow-hidden text-sm">${["In person","Video","Phone"].map(m=>`<button onclick="S.mode='${m}';render()" class="flex-1 py-1.5 ${S.mode===m?'bg-cta text-white font-bold':'bg-white text-secondary hover:bg-light-blue'}">${m}</button>`).join("")}</div></div>
+        <div><p class="text-xs font-bold uppercase text-muted mb-2">Time Zone</p>
+          <select onchange="S.tz=this.value" class="w-full border border-line rounded px-2 py-1.5 text-sm">${["(GMT-07:00) Pacific Daylight Time","(GMT-05:00) Central Daylight Time","(GMT-04:00) Eastern Daylight Time"].map(t=>`<option ${S.tz===t?'selected':''}>${t}</option>`).join("")}</select></div>
+      </aside>
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-heading text-lg text-heading">Select a date and time</h2>
+          <div class="flex items-center gap-2"><button ${S.weekOffset?'':'disabled'} onclick="S.weekOffset--;S.day=0;S.slot=null;render()" class="w-8 h-8 rounded border border-line text-secondary disabled:text-line">‹</button>
+          <span class="text-sm font-bold">${days[0].toLocaleDateString("en-US",{month:"long",year:"numeric"})}</span>
+          <button onclick="S.weekOffset++;S.day=0;S.slot=null;render()" class="w-8 h-8 rounded border border-line text-secondary">›</button></div>
+        </div>
+        <div class="grid grid-cols-7 gap-1 sm:gap-2 mb-5">${days.map((x,i)=>{const n=slotsFor(x).filter(s=>s.avail).length;const sel=i===S.day;
+          return `<button ${n?'':'disabled'} onclick="S.day=${i};S.slot=null;render()" class="rounded border-2 py-2 text-center ${sel?'border-cta bg-cta text-white':n?'border-line hover:border-secondary bg-white':'border-surface bg-surface text-line cursor-not-allowed'}">
+          <div class="text-[10px] sm:text-xs uppercase">${x.toLocaleDateString("en-US",{weekday:"short"})}</div><div class="text-lg font-bold">${x.getDate()}</div><div class="text-[10px] ${sel?'text-white/80':'text-muted'}">${n?n+' slots':'—'}</div></button>`;}).join("")}</div>
+        ${grp.map(([g,f])=>`<p class="text-xs font-bold uppercase text-muted mb-2">${g}</p><div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 mb-4">${sl.filter(f).map(s=>{const id=s.h*100+s.m,sel=S.slot===id;
+          return `<button ${s.avail?'':'disabled'} onclick="S.slot=${id};render()" class="py-2 rounded border text-sm font-bold ${sel?'bg-cta border-cta text-white':s.avail?'border-secondary text-secondary bg-white hover:bg-light-blue':'border-surface bg-surface text-line line-through cursor-not-allowed'}">${lbl(s)}</button>`;}).join("")}</div>`).join("")}
+      </div></div>`;
+  }
+  if(S.step===4){
+    const d=weekDays()[S.day],s={h:Math.floor(S.slot/100),m:S.slot%100};
+    const end=new Date(d);end.setHours(s.h,s.m+S.type.d);
+    const rows=[["Appointment Type",S.type.n+` (${S.type.d} min)`],["Date",d.toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"})],["Time",`${lbl(s)} – ${end.toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"})}`],["Time Zone",S.tz],["Location",S.loc.n+" · "+S.loc.a],["Service Resource",S.res.n],["Appointment Mode",S.mode]];
+    p.innerHTML=`<h2 class="font-heading text-lg text-heading mb-4">Review appointment details</h2>
+    <div class="grid lg:grid-cols-2 gap-6"><dl class="divide-y divide-line border border-line rounded">${rows.map(([k,v])=>`<div class="grid grid-cols-[150px_1fr] px-4 py-2.5 text-sm"><dt class="text-muted">${k}</dt><dd class="font-bold text-heading">${v}</dd></div>`).join("")}</dl>
+    <div><label class="text-sm font-bold text-heading block mb-1">Additional details</label><textarea oninput="S.notes=this.value" rows="5" class="w-full border border-line rounded p-2 text-sm focus:outline-cta" placeholder="Anything the advisor should know before the meeting?">${S.notes}</textarea>
+    <label class="flex items-center gap-2 text-sm mt-3"><input type="checkbox" checked class="accent-[#0176D3]"> Send confirmation email to jordan.smith@example.com</label></div></div>`;
+  }
+}
+function renderFoot(){
+  backBtn.style.visibility=S.step?"visible":"hidden";
+  const last=S.step===4;nextBtn.textContent=last?"Confirm Appointment":"Next";
+  nextBtn.disabled=S.step===3&&S.slot===null;
+  footHint.textContent=S.step===3?(S.slot===null?"Select an available time slot to continue":"Slot selected"):`Step ${S.step+1} of 5`;
+}
+function render(){renderPath();renderPanel();renderFoot();}
+function go(i){if(i===4&&S.slot===null)return;S.step=i;render();}
+function pickType(g,w){S.type=workTypes[g].items[w];S.slot=null;render();}
+function pickLoc(i){S.loc=locations[i];S.slot=null;render();}
+function pickRes(i){S.res=resources[i];S.slot=null;render();}
+backBtn.onclick=()=>{S.step--;render();};
+nextBtn.onclick=()=>{
+  if(S.step<4){S.step++;render();return;}
+  toastMsg.textContent=`Appointment scheduled with ${S.res.n} on ${fmtD(weekDays()[S.day])}.`;
+  toast.classList.remove("hidden");setTimeout(()=>toast.classList.add("hidden"),4000);
+};
+render();
+</script>
+
+<div data-mm-footer style="all:initial;display:flex;align-items:center;justify-content:center;padding:40px 24px 36px;margin-top:24px;border-top:1px solid rgba(127,127,127,.2);font:inherit;">
+  <img data-mm-footer-logo src="https://meshmesh.io/brand/meshmesh-salesforce-wordmark-blk.svg" alt="MeshMesh for Salesforce" style="display:block;height:26px;width:auto;max-width:none;margin:0;opacity:.8;border:0;box-shadow:none;" />
+</div>
+<script>(function(){try{
+  var logo=document.querySelector('[data-mm-footer-logo]');if(!logo)return;
+  var cx=document.createElement('canvas').getContext('2d');
+  function rgba(c){cx.clearRect(0,0,1,1);cx.fillStyle='#000';cx.fillStyle=c;cx.fillRect(0,0,1,1);return cx.getImageData(0,0,1,1).data;}
+  function bg(el){while(el){var c=getComputedStyle(el).backgroundColor;if(c){var p=rgba(c);if(p[3]>25)return p;}el=el.parentElement;}return null;}
+  var p=bg(document.body)||bg(document.documentElement);
+  if(p&&(0.2126*p[0]+0.7152*p[1]+0.0722*p[2])/255<0.5)logo.src="https://meshmesh.io/brand/meshmesh-salesforce-wordmark-wht.svg";
+}catch(e){}})();</script>
+</body>
+</html>

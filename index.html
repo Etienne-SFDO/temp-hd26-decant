@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STEPS Housing - Kitchen Replacement Options</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        steps: {
+                            main: '#FF5C5C',
+                            blue: '#48607A',
+                            navy: '#001C30',
+                            white: '#FFFFFF'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-steps-navy min-h-screen flex flex-col font-sans text-lg">
+
+    <!-- Top Navigation -->
+    <nav class="bg-steps-navy shadow-md sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <img src="STEPS-Secondary-Logo-03b.png" alt="STEPS Housing" class="h-10 object-contain">
+            </div>
+            <div class="flex items-center gap-4 bg-white py-3 px-6 rounded-full shadow-sm">
+                <div class="w-12 h-12 rounded-full bg-steps-main text-white flex items-center justify-center font-bold text-xl">
+                    LB
+                </div>
+                <div>
+                    <p class="text-sm text-slate-500 font-medium leading-tight">Welcome,</p>
+                    <p class="font-bold text-steps-navy text-lg leading-tight">Lauren Bailey</p>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl mx-auto px-6 py-12 w-full">
+        
+        <!-- Header Area -->
+        <div class="mb-12 text-center md:text-left border-l-8 border-steps-main pl-6 bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+            <div class="inline-block bg-blue-50 text-steps-blue font-bold px-4 py-2 rounded-lg text-sm mb-4 border border-blue-100">
+                <i class="fa-solid fa-bell mr-2"></i> Action Required by 31st January 2027
+            </div>
+            <h1 class="text-5xl font-extrabold text-steps-navy mb-4 tracking-tight">Good news! Your brand new kitchen is on schedule.</h1>
+            <p class="text-2xl text-steps-blue max-w-4xl leading-relaxed font-medium mb-4">
+                Following our <a href="#" onclick="showToast('Opening previous communication...', 'fa-envelope-open')" class="text-steps-main underline hover:text-[#e04e4e] transition">previous message</a>, we are getting ready to begin your 4-day kitchen replacement.
+            </p>
+            <p class="text-xl text-slate-600 max-w-4xl">
+                We want to make this upgrade as comfortable as possible for you. Please review the menu of options below and let us know your preferences.
+            </p>
+        </div>
+
+        <!-- STEP 1: Options Grid -->
+        <div class="mb-6 flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-steps-main text-white flex items-center justify-center font-bold text-xl shadow-md">1</div>
+            <h2 class="text-3xl font-bold text-steps-navy">Select your accommodation choice</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            
+            <!-- Option A -->
+            <div id="option-a" onclick="selectOption('option-a')" class="option-card relative bg-white rounded-2xl border-4 border-slate-200 p-8 cursor-pointer shadow-lg hover:shadow-xl card-transition group flex flex-col">
+                <div class="absolute top-4 right-4 bg-steps-main text-white text-sm font-bold px-4 py-2 rounded-full opacity-0 scale-90 transition-all duration-300 selected-badge shadow-md">
+                    <i class="fa-solid fa-check mr-2"></i> Selected
+                </div>
+                <div class="w-20 h-20 rounded-full bg-slate-100 text-steps-navy flex items-center justify-center text-4xl mb-6 group-hover:scale-110 group-hover:bg-steps-main group-hover:text-white card-transition shadow-sm">
+                    <i class="fa-solid fa-house-user"></i>
+                </div>
+                <h3 class="text-3xl font-bold mb-3 text-steps-navy">Stay Put</h3>
+                <p class="text-steps-blue mb-8 text-xl min-h-[60px] font-medium">Contractors work safely around you during the day.</p>
+                
+                <div class="bg-slate-50 rounded-xl p-6 border-2 border-slate-100 space-y-4 flex-grow mb-8">
+                    <h4 class="font-bold text-sm uppercase tracking-wider text-slate-500 mb-4">Your Entitlements:</h4>
+                    <div class="flex items-start gap-4">
+                        <i class="fa-solid fa-wallet text-steps-main mt-1 text-xl"></i>
+                        <p class="text-lg"><strong>£100</strong> Inconvenience Payment</p>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <i class="fa-solid fa-utensils text-steps-main mt-1 text-xl"></i>
+                        <p class="text-lg"><strong>£25</strong> per person/day food allowance</p>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <i class="fa-solid fa-percent text-steps-main mt-1 text-xl"></i>
+                        <p class="text-lg"><strong>30% Rent Reduction</strong> during works</p>
+                    </div>
+                </div>
+                
+                <div class="mt-auto">
+                    <button class="option-btn w-full py-4 rounded-xl border-2 border-steps-main text-steps-main font-bold text-xl hover:bg-steps-main hover:text-white transition card-transition">
+                        Choose
+                    </button>
+                </div>
+            </div>
+
+            <!-- Option B -->
+            <div id="option-b" onclick="selectOption('option-b')" class="option-card relative bg-white rounded-2xl border-4 border-slate-200 p-8 cursor-pointer shadow-lg hover:shadow-xl card-transition group flex flex-col">
+                <div class="absolute top-4 right-4 bg-steps-main text-white text-sm font-bold px-4 py-2 rounded-full opacity-0 scale-90 transition-all duration-300 selected-badge shadow-md">
+                    <i class="fa-solid fa-check mr-2"></i> Selected
+                </div>
+                <div class="w-20 h-20 rounded-full bg-slate-100 text-steps-navy flex items-center justify-center text-4xl mb-6 group-hover:scale-110 group-hover:bg-steps-main group-hover:text-white card-transition shadow-sm">
+                    <i class="fa-solid fa-hotel"></i>
+                </div>
+                <h3 class="text-3xl font-bold mb-3 text-steps-navy">Hotel Decant</h3>
+                <p class="text-steps-blue mb-8 text-xl min-h-[60px] font-medium">We book a comfortable local hotel room for you.</p>
+                
+                <div class="bg-slate-50 rounded-xl p-6 border-2 border-slate-100 space-y-4 flex-grow mb-8">
+                    <h4 class="font-bold text-sm uppercase tracking-wider text-slate-500 mb-4">Your Entitlements:</h4>
+                    <div class="flex items-start gap-4">
+                        <i class="fa-solid fa-bed text-steps-main mt-1 text-xl"></i>
+                        <p class="text-lg"><strong>Hotel fully paid</strong> by STEPS Housing</p>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <i class="fa-solid fa-utensils text-steps-main mt-1 text-xl"></i>
+                        <p class="text-lg"><strong>£15</strong> per person/day food allowance <br><span class="text-base text-steps-blue font-medium">(Breakfast included at hotel)</span></p>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <i class="fa-solid fa-ban text-slate-400 mt-1 text-xl"></i>
+                        <p class="text-lg text-slate-500"><strong>No rent reduction</strong> applies</p>
+                    </div>
+                </div>
+
+                <div class="mt-auto">
+                    <button class="option-btn w-full py-4 rounded-xl border-2 border-steps-main text-steps-main font-bold text-xl hover:bg-steps-main hover:text-white transition card-transition">
+                        Choose
+                    </button>
+                </div>
+            </div>
+
+            <!-- Option C -->
+            <div id="option-c" onclick="selectOption('option-c')" class="option-card relative bg-white rounded-2xl border-4 border-slate-200 p-8 cursor-pointer shadow-lg hover:shadow-xl card-transition group flex flex-col">
+                <div class="absolute top-4 right-4 bg-steps-main text-white text-sm font-bold px-4 py-2 rounded-full opacity-0 scale-90 transition-all duration-300 selected-badge shadow-md">
+                    <i class="fa-solid fa-check mr-2"></i> Selected
+                </div>
+                <div class="w-20 h-20 rounded-full bg-slate-100 text-steps-navy flex items-center justify-center text-4xl mb-6 group-hover:scale-110 group-hover:bg-steps-main group-hover:text-white card-transition shadow-sm">
+                    <i class="fa-solid fa-people-roof"></i>
+                </div>
+                <h3 class="text-3xl font-bold mb-3 text-steps-navy">Stay with Family</h3>
+                <p class="text-steps-blue mb-8 text-xl min-h-[60px] font-medium">Stay comfortably with your support network off-site.</p>
+                
+                <div class="bg-slate-50 rounded-xl p-6 border-2 border-slate-100 space-y-4 flex-grow mb-8">
+                    <h4 class="font-bold text-sm uppercase tracking-wider text-slate-500 mb-4">Your Entitlements:</h4>
+                    <div class="flex items-start gap-4">
+                        <i class="fa-solid fa-hand-holding-heart text-steps-main mt-1 text-xl"></i>
+                        <p class="text-lg"><strong>£150/week</strong> Host Payment <br><span class="text-base text-steps-blue font-medium">(Paid directly to your host)</span></p>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <i class="fa-solid fa-money-bill-wave text-steps-main mt-1 text-xl"></i>
+                        <p class="text-lg"><strong>£50</strong> Disturbance Payment to you</p>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <i class="fa-solid fa-percent text-steps-main mt-1 text-xl"></i>
+                        <p class="text-lg"><strong>30% Rent Reduction</strong> during works</p>
+                    </div>
+                </div>
+
+                <div class="mt-auto">
+                    <button class="option-btn w-full py-4 rounded-xl border-2 border-steps-main text-steps-main font-bold text-xl hover:bg-steps-main hover:text-white transition card-transition">
+                        Choose
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <hr class="border-slate-300 mb-12">
+
+        <!-- STEP 2: Support and Escalation Area -->
+        <div class="mb-6 flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-steps-navy text-white flex items-center justify-center font-bold text-xl shadow-md">2</div>
+            <h2 class="text-3xl font-bold text-steps-navy">Find out more & Get questions answered</h2>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch mb-8">
+            
+            <!-- Support Section -->
+            <div class="bg-white p-8 rounded-2xl border-2 border-slate-200 shadow-lg flex flex-col h-full">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="bg-slate-100 p-4 rounded-full text-steps-blue">
+                        <i class="fa-regular fa-circle-question text-3xl"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-steps-navy">Quick Answers</h3>
+                </div>
+                <p class="text-xl text-steps-blue mb-8 flex-grow">Need clarity on allowances, dates, or how things work? Get instant policy answers or speak with us directly.</p>
+                
+                <div class="grid grid-cols-2 gap-4 mt-auto">
+                    <button onclick="toggleChat()" class="bg-steps-navy hover:bg-[#002b4a] text-white font-bold h-28 rounded-xl shadow-md card-transition flex flex-col items-center justify-center gap-3 group">
+                        <i class="fa-regular fa-comments text-3xl group-hover:scale-110 transition"></i>
+                        <span>Chat with us</span>
+                    </button>
+                    <button onclick="showToast('Customer Service will call your registered number within 24 hours.', 'fa-phone')" class="bg-white hover:bg-slate-50 text-steps-navy border-2 border-slate-300 font-bold h-28 rounded-xl shadow-sm card-transition flex flex-col items-center justify-center gap-3 group">
+                        <i class="fa-solid fa-phone text-3xl text-slate-400 group-hover:text-steps-main transition"></i>
+                        <span>Speak with us</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Escalation Section -->
+            <div class="bg-white p-8 rounded-2xl border-2 border-slate-200 shadow-lg flex flex-col h-full">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="bg-[#fff0f0] p-4 rounded-full text-steps-main">
+                        <i class="fa-solid fa-mug-hot text-3xl"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-steps-navy">Discuss with your Housing Manager</h3>
+                </div>
+                <p class="text-xl text-steps-blue mb-8 flex-grow">We're here to ensure you feel completely comfortable. We would love to chat through your options and answer any questions you have.</p>
+                
+                <div class="grid grid-cols-3 gap-4 mt-auto">
+                    <button onclick="openScheduler('call', 'Video')" class="bg-white hover:bg-slate-50 text-steps-navy font-bold h-28 rounded-xl border-2 border-slate-300 card-transition flex flex-col items-center justify-center gap-3 group">
+                        <i class="fa-solid fa-video text-3xl text-slate-400 group-hover:text-steps-main transition"></i>
+                        <span>Video Call</span>
+                    </button>
+                    <button onclick="showToast('Phone Call requested. Your Housing Manager will call you shortly.', 'fa-phone')" class="bg-white hover:bg-slate-50 text-steps-navy font-bold h-28 rounded-xl border-2 border-slate-300 card-transition flex flex-col items-center justify-center gap-3 group">
+                        <i class="fa-solid fa-phone text-3xl text-slate-400 group-hover:text-steps-main transition"></i>
+                        <span>Phone Call</span>
+                    </button>
+                    <button onclick="openScheduler('visit')" class="bg-white hover:bg-slate-50 text-steps-navy font-bold h-28 rounded-xl border-2 border-slate-300 card-transition flex flex-col items-center justify-center gap-3 group">
+                        <i class="fa-solid fa-handshake text-3xl text-slate-400 group-hover:text-steps-main transition"></i>
+                        <span>In Person</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Checkbox confirmation at the bottom of Section 2 -->
+        <div class="flex items-center justify-start mb-16">
+            <div class="flex items-center gap-4 bg-white p-5 rounded-2xl border-2 border-slate-200 cursor-pointer shadow-sm hover:shadow-md card-transition w-fit" onclick="toggleUnderstanding()">
+                <div id="understand-check" class="w-8 h-8 rounded-lg border-2 border-slate-300 flex items-center justify-center text-white card-transition flex-shrink-0">
+                    <i class="fa-solid fa-check opacity-0 card-transition" id="understand-icon"></i>
+                </div>
+                <span class="text-steps-navy font-semibold text-xl select-none">I understand the process and do not need to be contacted to discuss my choice.</span>
+            </div>
+        </div>
+
+        <hr class="border-slate-300 mb-12">
+
+        <!-- STEP 3: Optional Extras -->
+        <div class="mb-6 flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-slate-300 text-steps-navy flex items-center justify-center font-bold text-xl shadow-md">3</div>
+            <h2 class="text-3xl font-bold text-steps-navy">Optional extras</h2>
+        </div>
+        <p class="text-xl text-steps-blue mb-8">Personalise your space or get ahead on your preparation by exploring these optional tools.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            
+            <!-- Extra 1 -->
+            <div onclick="launchExtra('Kitchen Finishes')" class="bg-white rounded-2xl border-2 border-slate-200 p-6 cursor-pointer shadow-md hover:shadow-xl card-transition group flex items-center gap-6">
+                <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center text-3xl text-steps-blue group-hover:bg-steps-main group-hover:text-white card-transition shadow-sm">
+                    <i class="fa-solid fa-swatchbook"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-steps-navy group-hover:text-steps-main transition">Select your finishes</h3>
+                    <p class="text-slate-500 font-medium text-sm mt-1">Pre-approved styles</p>
+                </div>
+            </div>
+
+            <!-- Extra 2 -->
+            <div onclick="launchExtra('Preparation Checklist')" class="bg-white rounded-2xl border-2 border-slate-200 p-6 cursor-pointer shadow-md hover:shadow-xl card-transition group flex items-center gap-6">
+                <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center text-3xl text-steps-blue group-hover:bg-steps-main group-hover:text-white card-transition shadow-sm">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-steps-navy group-hover:text-steps-main transition">Preparation checklist</h3>
+                    <p class="text-slate-500 font-medium text-sm mt-1">Get ready for day 1</p>
+                </div>
+            </div>
+
+            <!-- Extra 3 -->
+            <div onclick="launchExtra('Installation Timeline')" class="bg-white rounded-2xl border-2 border-slate-200 p-6 cursor-pointer shadow-md hover:shadow-xl card-transition group flex items-center gap-6">
+                <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center text-3xl text-steps-blue group-hover:bg-steps-main group-hover:text-white card-transition shadow-sm">
+                    <i class="fa-regular fa-calendar-check"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-steps-navy group-hover:text-steps-main transition">Track installation timeline</h3>
+                    <p class="text-slate-500 font-medium text-sm mt-1">View the 4-day plan</p>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Chat Widget -->
+    <div id="chat-widget" class="fixed bottom-8 right-8 w-[450px] bg-white rounded-2xl shadow-2xl border-2 border-slate-200 flex flex-col overflow-hidden opacity-0 pointer-events-none transition-all duration-300 transform translate-y-12 z-50">
+        <!-- Chat Header -->
+        <div class="bg-steps-navy text-white p-5 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <div class="bg-steps-main p-3 rounded-full text-white">
+                    <i class="fa-regular fa-comments text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg">STEPS Support</h3>
+                    <p class="text-sm text-slate-300">Policy & Advice</p>
+                </div>
+            </div>
+            <button onclick="toggleChat()" class="text-white hover:bg-slate-700 p-2 rounded-full transition">
+                <i class="fa-solid fa-xmark text-2xl"></i>
+            </button>
+        </div>
+        
+        <!-- Chat Messages -->
+        <div id="chat-messages" class="flex-grow h-96 p-6 overflow-y-auto bg-slate-50 flex flex-col gap-6 chat-scroll">
+            <div class="flex gap-4 max-w-[90%]">
+                <div class="w-10 h-10 rounded-full bg-steps-main flex-shrink-0 flex items-center justify-center text-white font-bold text-sm shadow-md">
+                    <i class="fa-solid fa-headset text-sm"></i>
+                </div>
+                <div class="bg-white border border-slate-200 p-4 rounded-2xl rounded-tl-none shadow-sm text-lg text-steps-navy">
+                    Hi Lauren, I'm here to ensure you feel supported during your kitchen replacement. What can I clarify about your accommodation options today?
+                </div>
+            </div>
+            
+            <div id="quick-prompts" class="flex flex-col gap-3 pl-14">
+                <button onclick="sendMockQuery('How does the rent reduction work?')" class="text-left bg-white border-2 border-steps-main text-steps-navy font-medium py-2 px-4 rounded-xl hover:bg-steps-main hover:text-white transition shadow-sm w-fit">
+                    "How does the rent reduction work?"
+                </button>
+                <button onclick="sendMockQuery('Why is the food allowance less for the hotel?')" class="text-left bg-white border-2 border-steps-main text-steps-navy font-medium py-2 px-4 rounded-xl hover:bg-steps-main hover:text-white transition shadow-sm w-fit">
+                    "Why is the food allowance less for the hotel?"
+                </button>
+            </div>
+        </div>
+
+        <!-- Chat Input -->
+        <div class="p-5 border-t-2 border-slate-200 bg-white">
+            <div class="relative flex items-center">
+                <input id="chat-input" type="text" placeholder="Type your message..." onkeydown="if (event.key === 'Enter') sendTypedMessage()" class="w-full pl-5 pr-14 py-4 rounded-xl border-2 border-slate-300 focus:outline-none focus:border-steps-main focus:ring-0 transition text-lg font-medium text-steps-navy bg-slate-50">
+                <button onclick="sendTypedMessage()" aria-label="Send" class="absolute right-3 bg-steps-main hover:bg-[#e04e4e] text-white w-10 h-10 rounded-lg flex items-center justify-center transition shadow-md">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Schedule Appointment Modal (Lightning Scheduler style) - title/content set by app.js -->
+    <div id="schedule-modal" class="fixed inset-0 z-[55] hidden items-center justify-center p-4 sm:p-8" role="dialog" aria-modal="true" aria-labelledby="schedule-title">
+        <div class="absolute inset-0 bg-steps-navy/70 backdrop-blur-sm" onclick="closeScheduler()"></div>
+        <div class="relative bg-slate-50 rounded-2xl shadow-2xl w-full max-w-6xl max-h-[92vh] flex flex-col overflow-hidden border-2 border-slate-200">
+            <!-- Header -->
+            <div class="bg-white border-b border-slate-200 px-6 sm:px-8 py-5 flex items-center gap-5">
+                <div class="w-14 h-14 rounded-xl bg-steps-main flex-shrink-0 flex items-center justify-center text-white shadow-sm">
+                    <i class="fa-solid fa-calendar-days text-2xl"></i>
+                </div>
+                <div class="flex-grow">
+                    <p class="text-sm text-slate-500 uppercase tracking-wide font-semibold">Appointment · Lauren Bailey</p>
+                    <h2 id="schedule-title" class="text-3xl font-extrabold text-steps-navy tracking-tight">Schedule VRA Call</h2>
+                </div>
+                <button onclick="closeScheduler()" aria-label="Close" class="w-12 h-12 rounded-full flex items-center justify-center text-slate-400 hover:text-steps-navy hover:bg-slate-100 transition">
+                    <i class="fa-solid fa-xmark text-2xl"></i>
+                </button>
+            </div>
+
+            <!-- Panel (rendered by app.js) -->
+            <div id="schedule-panel" class="flex-grow overflow-y-auto chat-scroll p-6 sm:p-8"></div>
+
+            <!-- Footer -->
+            <div class="border-t border-slate-200 bg-white px-6 sm:px-8 py-4 flex justify-between items-center gap-4">
+                <button id="schedule-back" onclick="schedulerBack()" class="px-6 py-3 rounded-xl border-2 border-slate-300 text-steps-navy font-bold hover:bg-slate-50 transition">Back</button>
+                <span id="schedule-hint" class="text-base text-slate-500 hidden sm:inline"></span>
+                <button id="schedule-next" onclick="schedulerNext()" class="px-10 py-3 rounded-xl bg-steps-main text-white font-bold shadow-md hover:bg-[#e04e4e] transition disabled:bg-slate-300 disabled:shadow-none disabled:cursor-not-allowed">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Toast Notification -->
+    <div id="toast" class="fixed bottom-12 left-1/2 transform -translate-x-1/2 bg-steps-navy border-2 border-steps-main text-white px-8 py-5 rounded-2xl shadow-2xl flex items-center gap-5 transition-all duration-300 toast-enter z-[60] pointer-events-none">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-steps-main text-3xl"></i>
+        <span id="toast-message" class="font-bold text-xl">Request sent successfully.</span>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
