@@ -116,7 +116,7 @@
                 <div class="w-20 h-20 rounded-full bg-slate-100 text-steps-navy flex items-center justify-center text-4xl mb-6 group-hover:scale-110 group-hover:bg-steps-main group-hover:text-white card-transition shadow-sm">
                     <i class="fa-solid fa-hotel"></i>
                 </div>
-                <h3 class="text-3xl font-bold mb-3 text-steps-navy">Hotel Decant</h3>
+                <h3 class="text-3xl font-bold mb-3 text-steps-navy">Hotel</h3>
                 <p class="text-steps-blue mb-8 text-xl min-h-[60px] font-medium">We book a comfortable local hotel room for you.</p>
                 
                 <div class="bg-slate-50 rounded-xl p-6 border-2 border-slate-100 space-y-4 flex-grow mb-8">
@@ -180,9 +180,55 @@
 
         <hr class="border-slate-300 mb-12">
 
-        <!-- STEP 2: Support and Escalation Area -->
+        <!-- STEP 2: Optional Extras -->
         <div class="mb-6 flex items-center gap-4">
             <div class="w-10 h-10 rounded-full bg-steps-navy text-white flex items-center justify-center font-bold text-xl shadow-md">2</div>
+            <h2 class="text-3xl font-bold text-steps-navy">Optional extras</h2>
+        </div>
+        <p class="text-xl text-steps-blue mb-8">Personalise your space or get ahead on your preparation by exploring these optional tools.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            
+            <!-- Extra 1 -->
+            <div onclick="openFinishes()" class="bg-white rounded-2xl border-2 border-slate-200 p-6 cursor-pointer shadow-md hover:shadow-xl card-transition group flex items-center gap-6">
+                <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center text-3xl text-steps-blue group-hover:bg-steps-main group-hover:text-white card-transition shadow-sm">
+                    <i class="fa-solid fa-swatchbook"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-steps-navy group-hover:text-steps-main transition">Select your finishes</h3>
+                    <p id="finishes-summary" class="text-slate-500 font-medium text-sm mt-1">Pre-approved styles</p>
+                </div>
+            </div>
+
+            <!-- Extra 2 -->
+            <div onclick="launchExtra('Preparation Checklist')" class="bg-white rounded-2xl border-2 border-slate-200 p-6 cursor-pointer shadow-md hover:shadow-xl card-transition group flex items-center gap-6">
+                <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center text-3xl text-steps-blue group-hover:bg-steps-main group-hover:text-white card-transition shadow-sm">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-steps-navy group-hover:text-steps-main transition">Preparation checklist</h3>
+                    <p class="text-slate-500 font-medium text-sm mt-1">Get ready for day 1</p>
+                </div>
+            </div>
+
+            <!-- Extra 3 -->
+            <div onclick="launchExtra('Installation Timeline')" class="bg-white rounded-2xl border-2 border-slate-200 p-6 cursor-pointer shadow-md hover:shadow-xl card-transition group flex items-center gap-6">
+                <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center text-3xl text-steps-blue group-hover:bg-steps-main group-hover:text-white card-transition shadow-sm">
+                    <i class="fa-regular fa-calendar-check"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-steps-navy group-hover:text-steps-main transition">Track installation timeline</h3>
+                    <p class="text-slate-500 font-medium text-sm mt-1">View the 4-day plan</p>
+                </div>
+            </div>
+
+        </div>
+
+        <hr class="border-slate-300 mb-12">
+
+        <!-- STEP 3: Support and Escalation Area -->
+        <div class="mb-6 flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-slate-300 text-steps-navy flex items-center justify-center font-bold text-xl shadow-md">3</div>
             <h2 class="text-3xl font-bold text-steps-navy">Find out more & Get questions answered</h2>
         </div>
 
@@ -238,7 +284,7 @@
 
         </div>
 
-        <!-- Checkbox confirmation at the bottom of Section 2 -->
+        <!-- Checkbox confirmation at the bottom of Section 3 -->
         <div class="flex items-center justify-start mb-16">
             <div class="flex items-center gap-4 bg-white p-5 rounded-2xl border-2 border-slate-200 cursor-pointer shadow-sm hover:shadow-md card-transition w-fit" onclick="toggleUnderstanding()">
                 <div id="understand-check" class="w-8 h-8 rounded-lg border-2 border-slate-300 flex items-center justify-center text-white card-transition flex-shrink-0">
@@ -246,52 +292,6 @@
                 </div>
                 <span class="text-steps-navy font-semibold text-xl select-none">I understand the process and do not need to be contacted to discuss my choice.</span>
             </div>
-        </div>
-
-        <hr class="border-slate-300 mb-12">
-
-        <!-- STEP 3: Optional Extras -->
-        <div class="mb-6 flex items-center gap-4">
-            <div class="w-10 h-10 rounded-full bg-slate-300 text-steps-navy flex items-center justify-center font-bold text-xl shadow-md">3</div>
-            <h2 class="text-3xl font-bold text-steps-navy">Optional extras</h2>
-        </div>
-        <p class="text-xl text-steps-blue mb-8">Personalise your space or get ahead on your preparation by exploring these optional tools.</p>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            
-            <!-- Extra 1 -->
-            <div onclick="launchExtra('Kitchen Finishes')" class="bg-white rounded-2xl border-2 border-slate-200 p-6 cursor-pointer shadow-md hover:shadow-xl card-transition group flex items-center gap-6">
-                <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center text-3xl text-steps-blue group-hover:bg-steps-main group-hover:text-white card-transition shadow-sm">
-                    <i class="fa-solid fa-swatchbook"></i>
-                </div>
-                <div>
-                    <h3 class="text-xl font-bold text-steps-navy group-hover:text-steps-main transition">Select your finishes</h3>
-                    <p class="text-slate-500 font-medium text-sm mt-1">Pre-approved styles</p>
-                </div>
-            </div>
-
-            <!-- Extra 2 -->
-            <div onclick="launchExtra('Preparation Checklist')" class="bg-white rounded-2xl border-2 border-slate-200 p-6 cursor-pointer shadow-md hover:shadow-xl card-transition group flex items-center gap-6">
-                <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center text-3xl text-steps-blue group-hover:bg-steps-main group-hover:text-white card-transition shadow-sm">
-                    <i class="fa-solid fa-clipboard-list"></i>
-                </div>
-                <div>
-                    <h3 class="text-xl font-bold text-steps-navy group-hover:text-steps-main transition">Preparation checklist</h3>
-                    <p class="text-slate-500 font-medium text-sm mt-1">Get ready for day 1</p>
-                </div>
-            </div>
-
-            <!-- Extra 3 -->
-            <div onclick="launchExtra('Installation Timeline')" class="bg-white rounded-2xl border-2 border-slate-200 p-6 cursor-pointer shadow-md hover:shadow-xl card-transition group flex items-center gap-6">
-                <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center text-3xl text-steps-blue group-hover:bg-steps-main group-hover:text-white card-transition shadow-sm">
-                    <i class="fa-regular fa-calendar-check"></i>
-                </div>
-                <div>
-                    <h3 class="text-xl font-bold text-steps-navy group-hover:text-steps-main transition">Track installation timeline</h3>
-                    <p class="text-slate-500 font-medium text-sm mt-1">View the 4-day plan</p>
-                </div>
-            </div>
-
         </div>
 
     </main>
@@ -342,6 +342,40 @@
                 <button onclick="sendTypedMessage()" aria-label="Send" class="absolute right-3 bg-steps-main hover:bg-[#e04e4e] text-white w-10 h-10 rounded-lg flex items-center justify-center transition shadow-md">
                     <i class="fa-solid fa-paper-plane"></i>
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Select Your Finishes Modal (cards rendered by app.js) -->
+    <div id="finishes-modal" class="fixed inset-0 z-[55] hidden items-center justify-center p-3 sm:p-4" role="dialog" aria-modal="true" aria-labelledby="finishes-title">
+        <div class="absolute inset-0 bg-steps-navy/70 backdrop-blur-sm" onclick="closeFinishes()"></div>
+        <div class="relative bg-slate-50 rounded-2xl shadow-2xl w-full max-w-7xl max-h-[97vh] flex flex-col overflow-hidden border-2 border-slate-200">
+            <!-- Header -->
+            <div class="bg-white border-b border-slate-200 px-6 sm:px-8 py-4 flex items-center gap-5">
+                <div class="w-14 h-14 rounded-xl bg-steps-main flex-shrink-0 flex items-center justify-center text-white shadow-sm">
+                    <i class="fa-solid fa-swatchbook text-2xl"></i>
+                </div>
+                <div class="flex-grow">
+                    <p class="text-sm text-slate-500 uppercase tracking-wide font-semibold">Kitchen Replacement · Lauren Bailey</p>
+                    <h2 id="finishes-title" class="text-3xl font-extrabold text-steps-navy tracking-tight">Select your finishes</h2>
+                </div>
+                <button onclick="closeFinishes()" aria-label="Close" class="w-12 h-12 rounded-full flex items-center justify-center text-slate-400 hover:text-steps-navy hover:bg-slate-100 transition">
+                    <i class="fa-solid fa-xmark text-2xl"></i>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="flex-grow overflow-y-auto chat-scroll px-6 sm:px-8 pt-4 pb-5">
+                <p class="text-lg text-steps-blue mb-3">Choose a pre-approved style for your new <strong class="text-steps-navy">kitchen cabinets</strong> and <strong class="text-steps-navy">flooring</strong>, designed to look great together.</p>
+                <div id="finishes-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8 pt-2"></div>
+                <p class="text-base text-slate-500 mt-5"><i class="fa-solid fa-circle-info mr-2 text-steps-blue"></i>All flooring is slip-resistant and fitted by our approved contractors. Appliances (fridge, cooker, washing machine) are not part of this choice.</p>
+            </div>
+
+            <!-- Footer -->
+            <div class="border-t border-slate-200 bg-white px-6 sm:px-8 py-4 flex justify-between items-center gap-4">
+                <button onclick="closeFinishes()" class="px-6 py-3 rounded-xl border-2 border-slate-300 text-steps-navy font-bold hover:bg-slate-50 transition">Cancel</button>
+                <span id="finishes-hint" class="text-base text-slate-500 hidden sm:inline"></span>
+                <button id="finishes-confirm" onclick="confirmFinishes()" class="px-10 py-3 rounded-xl bg-steps-main text-white font-bold shadow-md hover:bg-[#e04e4e] transition disabled:bg-slate-300 disabled:shadow-none disabled:cursor-not-allowed">Confirm my finishes</button>
             </div>
         </div>
     </div>

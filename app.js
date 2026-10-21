@@ -134,16 +134,16 @@ function sendMockQuery(queryText, typed = false) {
         let aiResponse = "";
 
         if (!typed && queryText.includes("rent reduction")) {
-            aiResponse = `If you choose <strong>Stay Put</strong> or <strong>Stay with Family</strong>, you are entitled to a 30% rent reduction for the duration of the works under the UK Housing Ombudsman standard. However, if you choose <strong>Hotel Decant</strong>, there is no rent reduction, as STEPS Housing covers the full cost of the accommodation.`;
+            aiResponse = `If you choose <strong>Stay Put</strong> or <strong>Stay with Family</strong>, you are entitled to a 30% rent reduction for the duration of the works under the UK Housing Ombudsman standard. However, if you choose <strong>Hotel</strong>, there is no rent reduction, as STEPS Housing covers the full cost of the accommodation.`;
         } else if (!typed && queryText.includes("food allowance")) {
-            aiResponse = `Of course! For <strong>Stay Put</strong>, the allowance is £25 per person, per day because you have no kitchen access. For <strong>Hotel Decant</strong>, the allowance is adjusted to £15 per person, per day because your hotel booking includes a complimentary breakfast.`;
+            aiResponse = `Of course! For <strong>Stay Put</strong>, the allowance is £25 per person, per day because you have no kitchen access. For <strong>Hotel</strong>, the allowance is adjusted to £15 per person, per day because your hotel booking includes a complimentary breakfast.`;
         } else {
             // Anything typed (e.g. "I want more") - can't authorise, offer to book a call/meeting or escalate
             aiResponse = `I understand, and I'm sorry if the allowance doesn't feel like enough. I'm not able to authorise a change to your allowance myself, but your Housing Manager can review your circumstances with you.
                 <p class="mt-3">You can use the <strong>Discuss with your Housing Manager</strong> options on this page, or I can set it up for you now:</p>
                 <div class="flex flex-col gap-2 mt-4">
-                    <button onclick="chatBook('call', 'Video')" class="text-left bg-white border-2 border-steps-main text-steps-navy font-semibold py-2 px-4 rounded-xl hover:bg-steps-main hover:text-white transition shadow-sm"><i class="fa-solid fa-video mr-2"></i>Book a video call with Sarah</button>
-                    <button onclick="chatBook('visit')" class="text-left bg-white border-2 border-steps-main text-steps-navy font-semibold py-2 px-4 rounded-xl hover:bg-steps-main hover:text-white transition shadow-sm"><i class="fa-solid fa-handshake mr-2"></i>Book an in-person meeting with Dan</button>
+                    <button onclick="chatBook('call', 'Video')" class="text-left bg-white border-2 border-steps-main text-steps-navy font-semibold py-2 px-4 rounded-xl hover:bg-steps-main hover:text-white transition shadow-sm"><i class="fa-solid fa-video mr-2"></i>Book a video call</button>
+                    <button onclick="chatBook('visit')" class="text-left bg-white border-2 border-steps-main text-steps-navy font-semibold py-2 px-4 rounded-xl hover:bg-steps-main hover:text-white transition shadow-sm"><i class="fa-solid fa-handshake mr-2"></i>Book an in-person meeting</button>
                     <button onclick="escalateToContactCentre(this)" class="text-left bg-white border-2 border-steps-blue text-steps-navy font-semibold py-2 px-4 rounded-xl hover:bg-steps-blue hover:text-white transition shadow-sm"><i class="fa-solid fa-headset mr-2"></i>Talk to our Contact Centre now</button>
                 </div>`;
         }
@@ -209,7 +209,7 @@ const SCHED_SLOT_MINS = 30;
 const SCHED_KINDS = {
     call: {
         title: 'Schedule VRA Call',
-        resource: { name: 'Sarah', role: 'Regeneration Specialist', initials: 'S' },
+        resource: { name: 'Dan', role: 'Housing Manager', initials: 'D' },
         type: 'Kitchen Replacement – VRA Call',
         start: new Date(2026, 9, 26), // Monday 26th October 2026
         modeLabel: 'Appointment Mode',
@@ -217,7 +217,7 @@ const SCHED_KINDS = {
         booked: 'VRA call',
         modes: {
             Video: { icon: 'fa-video', review: 'Video call', note: '<i class="fa-solid fa-paper-plane mr-1"></i> A secure video link will be sent to you before the call.' },
-            Phone: { icon: 'fa-phone', review: 'Phone call', note: '<i class="fa-solid fa-mobile-screen mr-1"></i> Sarah will call you on your registered phone number.' },
+            Phone: { icon: 'fa-phone', review: 'Phone call', note: '<i class="fa-solid fa-mobile-screen mr-1"></i> Dan will call you on your registered phone number.' },
         },
     },
     visit: {
@@ -289,7 +289,10 @@ function closeScheduler() {
 }
 
 document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeScheduler();
+    if (e.key === 'Escape') {
+        closeScheduler();
+        closeFinishes();
+    }
 });
 
 function schedSet(changes) {
@@ -440,4 +443,140 @@ function schedReviewHTML() {
             </label>
         </div>
     </div>`;
+}
+
+// Select Your Finishes Modal - pre-curated cabinet + flooring packages
+const FINISHES = [
+    {
+        id: 'contemporary',
+        name: 'Contemporary Clean',
+        pitch: 'Bright and modern. Helps smaller and galley kitchens feel bigger.',
+        cabinet: { name: 'Matte White', style: 'Slab', color: '#F4F4F1', shaker: false },
+        floor: { name: 'Light Grey Stone', style: 'Stone-effect vinyl', color: '#C5C9CC', pattern: 'tile' },
+        benefit: 'Wipe-clean, fingerprint-resistant',
+    },
+    {
+        id: 'warm',
+        name: 'Warm & Natural',
+        pitch: 'A traditional, cosy feel with soft wood tones.',
+        cabinet: { name: 'Light Oak', style: 'Woodgrain shaker', color: '#CFAE86', shaker: true, grain: true },
+        floor: { name: 'Warm Maple', style: 'Wood-effect vinyl', color: '#B5845A', pattern: 'plank' },
+        benefit: 'Hides scuffs and everyday wear',
+    },
+    {
+        id: 'urban',
+        name: 'Urban Practical',
+        pitch: 'High-contrast and modern. Built for busy family homes.',
+        cabinet: { name: 'Dove Grey', style: 'Shaker', color: '#A7ACAF', shaker: true },
+        floor: { name: 'Dark Charcoal Slate', style: 'Slate-effect vinyl', color: '#3D4247', pattern: 'slate' },
+        benefit: 'Forgiving of dirt and muddy shoes',
+    },
+];
+let chosenFinish = null;   // confirmed choice
+let pendingFinish = null;  // selection inside the open modal
+
+function finishFloorCSS(f) {
+    const c = f.color;
+    if (f.pattern === 'plank') {
+        return `background-color:${c};background-image:repeating-linear-gradient(90deg,rgba(0,0,0,.18) 0 2px,transparent 2px 64px),repeating-linear-gradient(0deg,rgba(255,255,255,.07) 0 3px,rgba(0,0,0,.05) 3px 7px);`;
+    }
+    if (f.pattern === 'slate') {
+        return `background-color:${c};background-image:linear-gradient(rgba(255,255,255,.12) 2px,transparent 2px),linear-gradient(90deg,rgba(255,255,255,.12) 2px,transparent 2px),radial-gradient(circle at 30% 40%,rgba(255,255,255,.06),transparent 60%);background-size:56px 56px,56px 56px,100% 100%;`;
+    }
+    return `background-color:${c};background-image:linear-gradient(rgba(255,255,255,.75) 2px,transparent 2px),linear-gradient(90deg,rgba(255,255,255,.75) 2px,transparent 2px),radial-gradient(circle at 70% 30%,rgba(255,255,255,.25),transparent 55%);background-size:56px 56px,56px 56px,100% 100%;`;
+}
+
+function finishDoorCSS(c) {
+    const grain = c.grain ? 'background-image:repeating-linear-gradient(90deg,rgba(120,80,40,.10) 0 1px,transparent 1px 6px,rgba(255,255,255,.08) 6px 8px,transparent 8px 13px);' : '';
+    const shaker = c.shaker ? 'box-shadow:inset 0 0 0 7px ' + c.color + ',inset 0 0 0 9px rgba(0,0,0,.14);' : 'box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);';
+    return `background-color:${c.color};${grain}${shaker}`;
+}
+
+// Mini kitchen mood board: wall cabinets, worktop, base cabinets, floor
+function finishPreviewHTML(f) {
+    const door = finishDoorCSS(f.cabinet);
+    const doors = n => [...Array(n)].map(() => `
+        <div class="flex-1 rounded-sm relative" style="${door}">
+            <span class="absolute left-1/2 -translate-x-1/2 bottom-1.5 w-6 h-1 rounded-full bg-slate-500/70"></span>
+        </div>`).join('');
+    return `
+    <div class="relative rounded-xl overflow-hidden border-2 border-slate-200 shadow-inner">
+        <span class="absolute left-3 bottom-2 bg-white/95 text-steps-navy text-sm font-bold px-3 py-1 rounded-full shadow"><i class="fa-solid fa-star text-steps-main mr-1"></i>${f.benefit}</span>
+        <div class="bg-[#EEF0F2] px-4 pt-2.5 pb-1.5">
+            <div class="flex gap-1.5 h-9 mb-3">${doors(4)}</div>
+            <div class="h-2.5 rounded-sm bg-[#8A8F94] mb-1"></div>
+            <div class="flex gap-1.5 h-12">${doors(4)}</div>
+        </div>
+        <div class="h-11" style="${finishFloorCSS(f.floor)}"></div>
+    </div>`;
+}
+
+function finishSwatchHTML(label, icon, item, css) {
+    return `
+    <div class="flex items-center gap-4">
+        <div class="w-11 h-11 rounded-lg border-2 border-white shadow-md flex-shrink-0" style="${css}"></div>
+        <div>
+            <p class="text-xs font-bold uppercase tracking-wider text-slate-500"><i class="fa-solid ${icon} mr-1 text-steps-main"></i>${label}</p>
+            <p class="text-base leading-tight"><strong>${item.name}</strong> <span class="text-steps-blue">· ${item.style}</span></p>
+        </div>
+    </div>`;
+}
+
+function renderFinishes() {
+    document.getElementById('finishes-grid').innerHTML = FINISHES.map(f => {
+        const sel = pendingFinish === f.id;
+        return `
+        <div onclick="pickFinish('${f.id}')" class="option-card relative bg-white rounded-2xl border-4 border-slate-200 p-5 cursor-pointer shadow-lg hover:shadow-xl card-transition flex flex-col ${sel ? 'option-selected' : ''}">
+            <div class="absolute top-3 right-3 z-10 bg-steps-main text-white text-sm font-bold px-4 py-2 rounded-full transition-all duration-300 shadow-md ${sel ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}">
+                <i class="fa-solid fa-check mr-2"></i> Selected
+            </div>
+            ${finishPreviewHTML(f)}
+            <h3 class="text-2xl font-bold mt-3 mb-1 text-steps-navy">${f.name}</h3>
+            <p class="text-steps-blue mb-3 text-lg font-medium min-h-[56px] leading-snug">${f.pitch}</p>
+
+            <div class="bg-slate-50 rounded-xl p-4 border-2 border-slate-100 space-y-3 flex-grow mb-4">
+                ${finishSwatchHTML('Cabinets', 'fa-door-closed', f.cabinet, finishDoorCSS(f.cabinet))}
+                ${finishSwatchHTML('Flooring', 'fa-border-all', f.floor, finishFloorCSS(f.floor).replace(/56px 56px/g, '20px 20px').replace(/64px/g, '18px'))}
+            </div>
+
+            <button class="mt-auto w-full py-3 rounded-xl border-2 border-steps-main font-bold text-xl transition card-transition ${sel ? 'bg-steps-main text-white shadow-md' : 'text-steps-main hover:bg-steps-main hover:text-white'}">
+                ${sel ? '<i class="fa-solid fa-check mr-2"></i> My Choice' : 'Choose'}
+            </button>
+        </div>`;
+    }).join('');
+
+    const picked = FINISHES.find(f => f.id === pendingFinish);
+    document.getElementById('finishes-confirm').disabled = !picked;
+    document.getElementById('finishes-hint').textContent = picked ? `You've chosen ${picked.name}` : 'Select a style to continue';
+}
+
+function openFinishes() {
+    pendingFinish = chosenFinish;
+    const modal = document.getElementById('finishes-modal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.classList.add('overflow-hidden');
+    renderFinishes();
+}
+
+function closeFinishes() {
+    const modal = document.getElementById('finishes-modal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.classList.remove('overflow-hidden');
+}
+
+function pickFinish(id) {
+    pendingFinish = id;
+    renderFinishes();
+}
+
+function confirmFinishes() {
+    const picked = FINISHES.find(f => f.id === pendingFinish);
+    if (!picked) return;
+    chosenFinish = picked.id;
+    closeFinishes();
+    const summary = document.getElementById('finishes-summary');
+    summary.innerHTML = `<i class="fa-solid fa-check text-steps-main mr-1"></i> Chosen: ${picked.name}`;
+    showToast(`Finishes saved: ${picked.name}.`, 'fa-swatchbook');
 }

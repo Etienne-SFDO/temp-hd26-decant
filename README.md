@@ -25,13 +25,16 @@ Then browse to <http://localhost:8000>.
 
 ## Demo script
 
-1. **Quick Answers → Chat with us** – click *"Why is the food allowance less for the hotel?"* for the canned answer.
-2. **Type anything** in the chat box (e.g. *"I want more"*) and press Enter. The assistant explains it can't authorise a change and offers:
-   - **Book a video call with Sarah** (opens the VRA Call scheduler)
-   - **Book an in-person meeting with Dan** (opens the In-Person scheduler)
+The page has three sections: **1. Select your accommodation choice**, **2. Optional extras** and **3. Find out more & Get questions answered**.
+
+1. **Optional extras → Select your finishes**: pick one of three pre-curated cabinet + flooring styles (Contemporary Clean, Warm & Natural, Urban Practical) and click **Confirm my finishes**. The card then shows the chosen style.
+2. **Quick Answers → Chat with us** – click *"Why is the food allowance less for the hotel?"* for the canned answer.
+3. **Type anything** in the chat box (e.g. *"I want more"*) and press Enter. The assistant explains it can't authorise a change and offers:
+   - **Book a video call** (opens the VRA Call scheduler)
+   - **Book an in-person meeting** (opens the In-Person scheduler)
    - **Talk to our Contact Centre now** (simulated hand-off)
-3. **Discuss with your Housing Manager**:
-   - **Video Call** → *Schedule VRA Call* with Sarah, Regeneration Specialist. Week starts Mon 26 Oct 2026, 30-minute slots, Video/Phone mode.
+4. **Discuss with your Housing Manager**:
+   - **Video Call** → *Schedule VRA Call* with Dan, Housing Manager. Week starts Mon 26 Oct 2026, 30-minute slots, Video/Phone mode.
    - **In Person** → *Schedule In-Person Meeting* with Dan, Housing Manager. Week starts Mon 16 Nov 2026, 30-minute slots, Home visit/Office.
    - Review screen → **Confirm Appointment** shows a confirmation toast.
 
@@ -41,14 +44,14 @@ All data is mocked in the browser; nothing is sent anywhere. Slot availability i
 
 | File | Purpose |
 |---|---|
-| `index.html` | Page layout (Tailwind via CDN) and the scheduler modal shell |
-| `app.js` | Interactivity: option cards, toasts, chat assistant, scheduler logic |
+| `index.html` | Page layout (Tailwind via CDN) plus the finishes and scheduler modal shells |
+| `app.js` | Interactivity: option cards, toasts, chat assistant, finishes picker, scheduler logic |
 | `style.css` | Small custom styles (animations, scrollbar, selected states) |
 | `STEPS-*.png`, `Steps_Icons_List.png` | STEPS brand logos, colour palette and icon reference |
 | `examples/` | Reference designs the scheduler was based on (not used by the page) |
 
 ## Customising
 
-Scheduler settings (dates, people, titles, modes) live in `SCHED_KINDS` near the scheduler section of `app.js`. Chat replies are in `sendMockQuery()` in the same file.
+Scheduler settings (dates, people, titles, modes) live in `SCHED_KINDS` near the scheduler section of `app.js`. Chat replies are in `sendMockQuery()`, and the finishes packages (names, colours, descriptions) are in `FINISHES`, all in the same file.
 
 Brand colours (`steps-main` #FF5C5C, `steps-blue` #48607A, `steps-navy` #001C30) are defined in the Tailwind config at the top of `index.html`.
